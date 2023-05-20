@@ -6,11 +6,40 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.9
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+          - dynamodb:*
+      Resource:
+          - arn:aws:dynamodb:eu-west-1:900750044523:table/favouriteOrganizationTable
 
 functions:
-  hello:
-    handler: handler.hello
+  getFavouriteOrganization:
+    handler: favouriteOrganization_handler.getAllFavouritesOrganizations
     events:
       - httpApi:
-          path: /
+          path: /favouriteOrganization
           method: get
+  postFavouriteOrganization:
+    handler: favouriteOrganization_handler.postFavouriteOrganization
+    events:
+      - httpApi:
+          path: /favouriteOrganization
+          method: post
+
+resources:
+  Resources:
+    favouriteOrganizationTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: favouriteOrganizationTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
