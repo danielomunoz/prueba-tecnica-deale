@@ -19,9 +19,12 @@
 * Paso 9: Desplegamos el proyecto de nuevo para actualizar nuestros permisos sobre la tabla de DynamoDB.
 * Paso 10: Añadimos lógica para el handler y actualizamos las funciones referentes a las lambdas que van a ser creadas en el fichero serverless.yml.
 * Paso 11: Desplegamos de nuevo la API y testeamos su funcionamiento.
+* Paso 12: Instalamos el plugin serverless-add-api-key: ```npm i -g serverless-add-api-key```
+* Paso 13: Añadimos api key en el serverless.yml y testeamos el API de nuevo.
 
 
 ## Instrucciones para ejecutar la API
 Con una herramienta como cURL o Postman, podemos llamar a los siguientes endpoints:  
-* GET - https://s3gz0qwk43.execute-api.eu-west-1.amazonaws.com/favouriteOrganization
-* POST - https://s3gz0qwk43.execute-api.eu-west-1.amazonaws.com/favouriteOrganization (Para esta petición debemos adjuntar un body tipo json, con los campos "org_id" y "favourite_org_id", ambos de tipo string)
+* GET - https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization
+* POST - https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization (Para esta petición debemos adjuntar un body tipo json, con los campos "org_id" y "favourite_org_id", ambos de tipo string)  
+Recordemos que, para ejecutar ambos métodos, será necesario incluir la cabecera ```x-api-key``` con el valor ```abcdefghijklmnopqrstuvwxyz1234567890```. En caso contrario, la api nos devolverá una respuesta 403 - Forbidden.

@@ -13,20 +13,26 @@ provider:
           - dynamodb:*
       Resource:
           - arn:aws:dynamodb:eu-west-1:900750044523:table/favouriteOrganizationTable
+  apiGateway:
+    apiKeys:
+      - name: 'FirstApiKey'
+        value: 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 functions:
   getFavouriteOrganization:
     handler: favouriteOrganization_handler.getAllFavouritesOrganizations
     events:
-      - httpApi:
+      - http:
           path: /favouriteOrganization
           method: get
+          private: true
   postFavouriteOrganization:
     handler: favouriteOrganization_handler.postFavouriteOrganization
     events:
-      - httpApi:
+      - http:
           path: /favouriteOrganization
           method: post
+          private: true
 
 resources:
   Resources:
