@@ -19,7 +19,7 @@ provider:
         value: 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 functions:
-  getFavouriteOrganization:
+  getAllFavouritesOrganizations:
     handler: favouriteOrganization_handler.getAllFavouritesOrganizations
     events:
       - http:

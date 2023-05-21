@@ -19,8 +19,7 @@
 * Paso 9: Desplegamos el proyecto de nuevo para actualizar nuestros permisos sobre la tabla de DynamoDB.
 * Paso 10: Añadimos lógica para el handler y actualizamos las funciones referentes a las lambdas que van a ser creadas en el fichero serverless.yml.
 * Paso 11: Desplegamos de nuevo la API y testeamos su funcionamiento.
-* Paso 12: Instalamos el plugin serverless-add-api-key: ```npm i -g serverless-add-api-key```
-* Paso 13: Añadimos api key en el serverless.yml y testeamos el API de nuevo.
+* Paso 13: Añadimos api key en el serverless.yml y testeamos el API de nuevo añadiendo la cabecera "x-api-key" a los headers.
 
 
 ## Instrucciones para ejecutar la API
@@ -28,3 +27,5 @@ Con una herramienta como cURL o Postman, podemos llamar a los siguientes endpoin
 * GET - https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization
 * POST - https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization (Para esta petición debemos adjuntar un body tipo json, con los campos "org_id" y "favourite_org_id", ambos de tipo string)  
 Recordemos que, para ejecutar ambos métodos, será necesario incluir la cabecera ```x-api-key``` con el valor ```abcdefghijklmnopqrstuvwxyz1234567890```. En caso contrario, la api nos devolverá una respuesta 403 - Forbidden.
+* Ejemplo de petición desde el cURL de Windows Powershell para el método GET: ```curl -H @{"x-api-key"="abcdefghijklmnopqrstuvwxyz1234567890"} -Uri https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization | Select-Object -Expand Content```
+* Ejemplo de petición desde el cURL de Windows Powershell para el método POST: ```$body = @{ org_id = '89de6bf6-0273-4f6f-8596-648825d41c5e'; favourite_org_id = '0369d828-b779-4e87-aab6-6ecd02fcfe3d' } | ConvertTo-Json``` -> ```curl -H @{"x-api-key"="abcdefghijklmnopqrstuvwxyz1234567890"} -Method Post -Body $body -Uri https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization -ContentType "application/json"```

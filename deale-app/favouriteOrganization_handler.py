@@ -1,8 +1,10 @@
-import json
-import boto3
-from boto3.dynamodb.conditions import Attr
 from datetime import datetime
 import uuid
+
+import boto3
+from boto3.dynamodb.conditions import Attr
+
+from utils import *
 
 
 dynamodbTableName = 'favouriteOrganizationTable'
@@ -15,52 +17,45 @@ def getAllFavouritesOrganizations(event, context):
         db_response = table.scan()
         result = db_response['Items']
         
-        body = {
+        response_body = {
             'ok': True,
             'message': 'Favourite Organizations found!',
+            'resultKey': 'favouriteOrganizations',
             'favouriteOrganizations': result
         }
 
-        return buildResponse(200, body)
-    
+        return buildResponse(200, response_body)
     except:
-        body = {
+        response_body = {
             'ok': False,
-            'message': 'Some error ocurred when retrieveng Favourite Organizations from database'
+            'message': 'Internal server error when retrieveng Favourite Organizations from database'
         }
 
-        return buildResponse(500, body)
+        return buildResponse(500, response_body)
 
 
 def postFavouriteOrganization(event, context):
     try:
-        request_body = json.loads(event['body'])
-
-        if 'org_id' not in request_body:
-            body = {
-                'ok': False,
-                'message': 'Error! Organization ID (org_id field in body) is needed'
-            }
-
-            return buildResponse(400, body)
+        there_is_body_in_request, request_body, error_body = isThereBodyInRequest(event['body'])
+        if not there_is_body_in_request:
+            return buildResponse(400, error_body)
         
-        if 'favourite_org_id' not in request_body:
-            body = {
-                'ok': False,
-                'message': 'Error! Favourite Organization ID (favourite_org_id field in body) is needed'
-            }
-
-            return buildResponse(400, body)
+        there_is_a_valid_org_id_in_request, error_body = validateOrgIdInBody(request_body)
+        if not there_is_a_valid_org_id_in_request:
+            return buildResponse(400, error_body)
+        
+        there_is_a_valid_favourite_org_id_in_request, error_body = validateFavouriteOrgIdInBody(request_body)
+        if not there_is_a_valid_favourite_org_id_in_request:
+            return buildResponse(400, error_body)
         
         db_response = table.scan(FilterExpression=Attr('org_id').eq(request_body['org_id'])
                                     & Attr('favourite_org_id').eq(request_body['favourite_org_id']))
-        if len(db_response['Items']) != 0:
-            body = {
-                'ok': False,
-                'message': 'Error! This favourite organization relationship is already in database'
-            }
-
-            return buildResponse(403, body)
+        
+        items_in_db_with_same_params = db_response['Items']
+        
+        there_are_items_in_db_with_same_params, errorBody = checkItemsInDbWithSameParams(items_in_db_with_same_params)
+        if there_are_items_in_db_with_same_params:
+            return buildResponse(400, errorBody)
 
         request_body['id'] = str(uuid.uuid4())
         
@@ -69,31 +64,19 @@ def postFavouriteOrganization(event, context):
 
         table.put_item(Item=request_body)
 
-        body = {
+        response_body = {
             'ok': True,
             'message': 'Success! New Favourite Organization created in database',
+            'resultKey': 'favouriteOrganization',
             'favouriteOrganization': request_body
         }
 
-        return buildResponse(200, body)
+        return buildResponse(200, response_body)
     
     except:
-        body = {
+        response_body = {
             'ok': False,
-            'message': 'Some error ocurred when creating a new Favourite Organization in database. Remember that you need to attach a json body to the request with the following fields: [org_id, favourite_org_id]'
+            'message': 'Internal server error when creating a new Favourite Organization in database'
         }
 
-        return buildResponse(500, body)
-
-
-def buildResponse(statusCode, body=None):
-    response = {
-        'statusCode': statusCode,
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        }
-    }
-    if body is not None:
-        response['body'] = json.dumps(body)
-    return response
+        return buildResponse(500, response_body)
