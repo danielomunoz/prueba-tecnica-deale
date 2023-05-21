@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "af8316d1-6a6d-4104-b68e-3ea501ff88e9",
+		"name": "Deale - Prueba técnica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4731723"
+	},
+	"item": [
+		{
+			"name": "GET All Favourite Organizations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "abcdefghijklmnopqrstuvwxyz1234567890",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization",
+					"protocol": "https",
+					"host": [
+						"svwncifji6",
+						"execute-api",
+						"eu-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"favouriteOrganization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Favourite Organization",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "abcdefghijklmnopqrstuvwxyz1234567890",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"org_id\": \"89de6bf6-0273-4f6f-8596-648825d41c5e\",\r\n    \"favourite_org_id\": \"0369d828-b779-4e87-aab6-6ecd02fcfe3d\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization",
+					"protocol": "https",
+					"host": [
+						"svwncifji6",
+						"execute-api",
+						"eu-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"favouriteOrganization"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

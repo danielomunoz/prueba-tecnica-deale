@@ -1,5 +1,6 @@
 # Prueba técnica para el puesto de desarrollador backend - Deale - Daniel Muñoz Amaya
 
+
 ## Detalle de los pasos seguidos para el desarrollo
 * Paso 1: Creación de una cuenta gratuita en AWS (link: https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all)
 * Paso 2: Creación de una cuenta en serverless (link: https://app.serverless.com/?view=register)
@@ -29,3 +30,5 @@ Con una herramienta como cURL o Postman, podemos llamar a los siguientes endpoin
 Recordemos que, para ejecutar ambos métodos, será necesario incluir la cabecera ```x-api-key``` con el valor ```abcdefghijklmnopqrstuvwxyz1234567890```. En caso contrario, la api nos devolverá una respuesta 403 - Forbidden.
 * Ejemplo de petición desde el cURL de Windows Powershell para el método GET: ```curl -H @{"x-api-key"="abcdefghijklmnopqrstuvwxyz1234567890"} -Uri https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization | Select-Object -Expand Content```
 * Ejemplo de petición desde el cURL de Windows Powershell para el método POST: ```$body = @{ org_id = '89de6bf6-0273-4f6f-8596-648825d41c5e'; favourite_org_id = '0369d828-b779-4e87-aab6-6ecd02fcfe3d' } | ConvertTo-Json``` -> ```curl -H @{"x-api-key"="abcdefghijklmnopqrstuvwxyz1234567890"} -Method Post -Body $body -Uri https://svwncifji6.execute-api.eu-west-1.amazonaws.com/dev/favouriteOrganization -ContentType "application/json"```
+* Para crear un nuevo objeto dentro de la tabla de Empresas Favoritas, hay que proporcionar dos UUID's, que corresponderán a los parámetros "org_id" y "favourite_org_id" dentre del body de la request. Para ello, he creado un script en Python que genera UUID's aleatorios. Podéis ejecutarlo desde la ruta del repositorio mediante el comando ```py -3 ./util-files/generateUUID.py```
+* Dentro del directorio ./util-files dejo también la colección de Postman que he empleado para hacer pruebas, por si os es más cómodo de ejecutar que usando Powershell.

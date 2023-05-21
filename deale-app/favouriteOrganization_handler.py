@@ -4,7 +4,7 @@ import uuid
 import boto3
 from boto3.dynamodb.conditions import Attr
 
-from utils import *
+from favouriteOrganization_utils import *
 
 
 dynamodbTableName = 'favouriteOrganizationTable'
